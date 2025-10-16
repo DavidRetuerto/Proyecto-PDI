@@ -1,0 +1,36 @@
+
+//descarga dataset del grupo
+
+from roboflow import Roboflow
+rf = Roboflow(api_key="XnYmTQquflrrs6LIUsOr")
+project = rf.workspace("david-retuerto-neyra").project("grasa-corporal-w95z9")
+version = project.version(1)
+dataset = version.download("yolov11")
+
+
+//entrenamiento utilizado
+
+from ultralytics import YOLO
+from pathlib import Path
+
+cfg_run = dict(model="yolo11n", epochs=20, batch=8, imgsz=640)
+
+model = YOLO("yolo11n.pt")
+results = model.train(
+    data=str(yaml_path),
+    epochs=cfg_run["epochs"],
+    batch=cfg_run["batch"],
+    imgsz=cfg_run["imgsz"],
+    workers=0,
+    project="runs",
+    name="modelo_fisico",           # <- cambio de nombre del experimento
+    fliplr=0.5, degrees=10.0, translate=0.05, scale=0.10,
+    hsv_h=0.015, hsv_s=0.5, hsv_v=0.3,
+    mosaic=0.0, mixup=0.0
+)
+
+exp_dir = Path("runs") / "modelo_fisico"
+
+mp, mr, map50, map_ = results.mean_results()
+stats = {"precision": float(mp), "recall": float(mr), "map50": float(map50), "map": float(map_)}
+print("modelo_fisico:", stats)
