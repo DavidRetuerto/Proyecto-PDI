@@ -1,5 +1,4 @@
-
-//descarga dataset del grupo
+# descarga dataset del grupo
 
 from roboflow import Roboflow
 rf = Roboflow(api_key="XnYmTQquflrrs6LIUsOr")
@@ -8,7 +7,7 @@ version = project.version(1)
 dataset = version.download("yolov11")
 
 
-//entrenamiento utilizado
+# entrenamiento utilizado
 
 from ultralytics import YOLO
 from pathlib import Path
