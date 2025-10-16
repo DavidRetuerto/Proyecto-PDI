@@ -5,3 +5,16 @@ Nuestro proyecto a teniedo de avances el entrenamiento logico del modelo para qu
 
 #Problema
 
+# Levantamiento de página
+```bash
+# Backend
+cd mi_proyecto/mi_proyecto_django
+python manage.py runserver
+
+cd ..
+
+# Frontend
+cd mi_proyecto_php
+php -S localhost:8080
+
+```
