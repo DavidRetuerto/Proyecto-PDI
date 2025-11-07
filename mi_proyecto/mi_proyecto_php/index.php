@@ -136,10 +136,11 @@
             
         }
 
-        .custom-icon {
-            display: inline-block;
-            width: 0.1px;  /* Tamaño del ícono */
-            height: 0.1px;
+        .upload-box img {
+            object-fit: cover; /* Ajusta la imagen para cubrir todo el espacio sin distorsionar */
+            width: 100%;
+            height: 100%;
+            border-radius: 20px; /* Bordes redondeados */
         }
 
         .upload-box button {
@@ -259,11 +260,14 @@
         </div>
         
 
-        <!-- Barra de progreso -->
-        <div class="progress">
-            <div class="progress-bar" id="progress-bar">0%</div>
-        </div>
     </section>
+        <!-- Contenedor de la imagen cargada -->
+    <div id="imageContainer" style="display: none; position: relative;">
+        <img id="uploadedImage" src="" alt="Imagen cargada" style="max-width: 100%;"/>
+        <button id="sendButton" style="display: block;">Enviar Foto</button>
+        <button id="deleteButton" style="position: absolute; top: 0; right: 0; background: red; color: white; border: none;">X</button>
+    </div>
+
 
     <!-- Footer -->
     <div class="footer">
@@ -275,55 +279,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 
     <script>
-        // Función para previsualizar la imagen seleccionada
-        function previewImage(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function () {
-                const imagePreview = document.createElement('img');
-                imagePreview.src = reader.result;
-                imagePreview.style.width = '100%';
-                imagePreview.style.height = 'auto';
-                document.querySelector('.upload-box').appendChild(imagePreview);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Enviar la imagen con barra de progreso
-        document.querySelector('.upload-box button').addEventListener('click', function () {
-            const fileInput = document.getElementById('image');
-            const file = fileInput.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append('image', file);
-
-                const progressContainer = document.querySelector('.progress');
-                const progressBar = document.getElementById('progress-bar');
-                progressContainer.style.display = 'block';
-
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://localhost:8000/upload/', true);
-
-                xhr.upload.onprogress = function (e) {
-                    if (e.lengthComputable) {
-                        const percent = (e.loaded / e.total) * 100;
-                        progressBar.style.width = percent + '%';
-                        progressBar.textContent = Math.round(percent) + '%';
-                    }
-                };
-
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        progressBar.style.width = '100%';
-                        progressBar.textContent = '¡Carga completa!';
-                    } else {
-                        alert('Hubo un error al subir la imagen.');
-                    }
-                };
-
-                xhr.send(formData);
-            }
-        });
+        
+        
+        
     </script>
 
 </body>
