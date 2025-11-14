@@ -149,7 +149,7 @@
             border-radius: 20px;  /* Bordes más redondeados */
             /* box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);*/
             
-            margin: 80px 20px;
+            margin: 30px 20px;
             flex: 0 1 auto;
             position: relative;
 
@@ -307,22 +307,6 @@
             font-size: 2.5rem; /* ícono más grande para llenar el círculo */
         }
 
-        /* Barra de progreso */
-        .progress {
-            width: 80%;
-            height: 20px;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .progress-bar {
-            width: 0%;
-            background-color: #28a745;
-            text-align: center;
-            line-height: 20px;
-            color: white;
-        }
-
         /* Footer */
         .footer {
             background-color: #f1f1f1;
@@ -371,6 +355,140 @@
             align-items: center;        /* Centrar verticalmente */
     
         }
+
+        /* Panel de objetivos */
+        .goal-panel {
+            width: 60%;
+            margin: 22px auto 0 auto;
+            text-align: left;
+        }
+
+        .goal-title {
+            margin: 0 0 6px 0;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #2d2d2d;
+            text-align: center;  
+        }
+
+        .goal-subtitle {
+            margin: 0 0 14px 0;
+            font-size: 0.95rem;
+            color: #6c757d;
+            text-align: center;  
+        }
+
+        /* Grid en una sola fila */
+        .goal-grid {
+            display: flex;
+            justify-content: center;    /* centra los botones */
+            align-items: stretch;
+            gap: 20px;                  /* espacio entre botones */
+            flex-wrap: nowrap;          /* 🔥 no permite que bajen de fila */
+            width: 100%;
+            margin-top: 20px;
+        }
+
+       /* Botón base (más pequeño y compacto) */
+       .goal-btn {
+            flex: 1 1 160px;              /* más pequeños */
+            max-width: 220px;             /* límite para que NO se alarguen */
+            height: 140px;                /*  altura fija tipo tarjeta */
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            gap: 8px;
+            padding: 14px 12px;           /* compacto */
+
+            background-color: #f4f7f6;
+            border: 2px solid #cdd5d2;
+            border-radius: 16px;
+
+            cursor: pointer;
+            transition: 
+                background-color .25s ease,
+                border-color .25s ease,
+                transform .12s ease,
+                box-shadow .25s ease;
+        }
+
+        /* Hover */
+        .goal-btn:hover {
+            background-color: #19b89c;       /* verde elegante */
+            border-color: #159a82;           /* borde más oscuro */
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25,184,156,0.25);
+        }
+
+        /* Hover: cambiar textos a blanco */
+        .goal-btn:hover .goal-emoji,
+        .goal-btn:hover .goal-text strong,
+        .goal-btn:hover .goal-text span {
+            color: #ffffff;
+        }
+
+        /* Estado presionado (perfecto) */
+        .goal-btn.active {
+            background-color: #9ee8d8;       /* verde agua claro */
+            border-color: #19b89c;           /* mismo color, más fuerte */
+            box-shadow: 0 0 0 transparent;
+            transform: translateY(0);        /* no se eleva */
+        }
+
+        /* Active: textos con color verde intenso */
+        .goal-btn.active .goal-emoji,
+        .goal-btn.active .goal-text strong,
+        .goal-btn.active .goal-text span {
+            color: #0e7f6e;
+        }
+
+        /* Icono */
+        .goal-emoji {
+            font-size: 1.9rem;               /* más pequeño */
+            line-height: 1;
+            transition: color .25s ease;
+        }
+
+        /* Texto */
+        .goal-text {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .goal-text strong {
+            font-size: 0.95rem;
+            color: #2d2d2d;
+            transition: color .25s ease;
+        }
+
+        .goal-text span {
+            font-size: 0.78rem;
+            color: #6c757d;
+            transition: color .25s ease;
+        }
+      
+     
+        /* Ajustes responsive */
+        @media (max-width: 768px) {
+           .goal-panel { width: 90%; }
+        }
+
+        @media (max-width: 900px) {
+            .goal-grid {
+                flex-wrap: wrap;              /* permite que bajen */
+                justify-content: center;
+            }
+
+            .goal-btn {
+                flex: 1 1 260px;              /* ocupa todo el ancho posible */
+            }
+        }
     </style>
 </head>
 
@@ -409,9 +527,10 @@
     <!-- Sección para Subir Imagen -->
     <section class="upload-section">
         <h2>Comienza tu Análisis</h2>
-        <p class="secondary-text">Sube una imagen de cuerpo completo para obtener tu evaluación personalizada</p>
+        <p class="secondary-text">
+            Sube una imagen de cuerpo completo para obtener tu evaluación personalizada
+        </p>
 
-        <!-- Cuadro de carga -->
         <div class="upload-box" id="upload-box" onclick="triggerUpload()">
             <!-- Botón X para eliminar -->
             <span id="close-btn" title="Eliminar imagen">&times;</span>
@@ -421,20 +540,47 @@
                 <i class="fas fa-image"></i>
             </div>
 
-
             <p class="main-text" id="upload-text-1">Sube una imagen de tu cuerpo</p>
             <p class="secondary-text" id="upload-text-2">Arrastra y suelta o haz clic para seleccionar</p>
+
             <input type="file" id="image" accept="image/*" class="form-control" onchange="previewImage(event)">
             <button id="upload-btn">Seleccionar imagen</button>
 
-            <!-- Imagen dentro del mismo recuadro -->
             <img id="preview-image" src="" alt="Vista previa" style="display: none;">
         </div>
 
+        <!-- Panel de objetivos (aparece tras subir imagen) -->
+        <div id="goal-panel" class="goal-panel" style="display:none;">
+            <h3 class="goal-title">¿Cuál es tu objetivo?</h3>
+            <p class="goal-subtitle">Selecciona tu meta para obtener recomendaciones personalizadas</p>
+
+            <div class="goal-grid">
+                <button class="goal-btn" data-goal="cut">
+                    <div class="goal-emoji">📉</div>
+                    <div class="goal-text">
+                        <strong>Bajar de Peso</strong>
+                        <span>Déficit calórico</span>
+                    </div>
+                </button>
+
+                <button class="goal-btn" data-goal="bulk">
+                    <div class="goal-emoji">📈</div>
+                    <div class="goal-text">
+                        <strong>Subir de Peso</strong>
+                        <span>Superávit calórico</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Botón Analizar -->
         <button id="analyze-btn" style="display: none;">
-             <i class="fas fa-magic"></i> Analizar Imagen
+            <i class="fas fa-magic"></i> Analizar imagen
         </button>
     </section>
+
+    <!-- Font Awesome (si no lo tienes en tu header) -->
+    <script src="https://kit.fontawesome.com/a2e0f1f1b2.js" crossorigin="anonymous"></script>
 
     </section>
         <!-- Contenedor de la imagen cargada -->
@@ -455,11 +601,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 
     <script>
+        // 👇 Pega aquí TODO el código JavaScript del bloque anterior
         function triggerUpload() {
             const uploadBox = document.getElementById('upload-box');
             const input = document.getElementById('image');
-
-            // Solo abrir si el cuadro no está desactivado
             if (!uploadBox.classList.contains('disabled')) {
                 input.click();
             }
@@ -474,38 +619,40 @@
             const text1 = document.getElementById('upload-text-1');
             const text2 = document.getElementById('upload-text-2');
             const button = document.getElementById('upload-btn');
+            const goalPanel = document.getElementById('goal-panel');
 
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    // Mostrar imagen
                     previewImage.src = e.target.result;
                     previewImage.style.display = 'block';
-
-                    // Ocultar textos y botón
                     text1.style.display = 'none';
                     text2.style.display = 'none';
                     button.style.display = 'none';
 
-                    // Desactivar clic en upload-box
                     setTimeout(() => {
                         uploadBox.classList.add('disabled');
                         uploadBox.style.cursor = 'default';
                         uploadBox.removeAttribute('onclick');
                     }, 200);
 
-                    // Mostrar botón analizar y X
-                    analyzeBtn.style.display = 'inline-block';
                     closeBtn.style.display = 'block';
+                    goalPanel.style.display = 'block';
+                    analyzeBtn.style.display = 'inline-block';
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        // Función para restaurar el estado original
-        document.getElementById('close-btn').addEventListener('click', function (e) {
-            e.stopPropagation(); // Evita que se dispare el clic del upload box
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.goal-btn');
+            if (!btn) return;
+            document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
 
+        document.getElementById('close-btn').addEventListener('click', function (e) {
+            e.stopPropagation();
             const previewImage = document.getElementById('preview-image');
             const uploadBox = document.getElementById('upload-box');
             const analyzeBtn = document.getElementById('analyze-btn');
@@ -514,8 +661,8 @@
             const text2 = document.getElementById('upload-text-2');
             const button = document.getElementById('upload-btn');
             const input = document.getElementById('image');
+            const goalPanel = document.getElementById('goal-panel');
 
-            // Restaurar elementos
             previewImage.style.display = 'none';
             previewImage.src = '';
             text1.style.display = 'block';
@@ -523,14 +670,43 @@
             button.style.display = 'inline-block';
             analyzeBtn.style.display = 'none';
             closeBtn.style.display = 'none';
+            goalPanel.style.display = 'none';
             input.value = '';
 
-            // Reactivar clic
             uploadBox.classList.remove('disabled');
             uploadBox.style.cursor = 'pointer';
             uploadBox.setAttribute('onclick', 'triggerUpload()');
+
+            document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('active'));
         });
+
+        // "Analizar imagen" envíe la imagen directamente al backend.
+        document.getElementById("analyze-btn").addEventListener("click", function () {  
+        const imgElement = document.getElementById("preview-image");
+
+        // Convertimos la imagen mostrada a Blob
+        fetch(imgElement.src)
+            .then(res => res.blob())
+            .then(blob => {
+
+                let formData = new FormData();
+                formData.append("image", blob, "upload.jpg");
+
+                fetch("http://localhost:8000/analizar/", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Respuesta del backend:", data);
+                    alert("Resultado: " + data.prediccion);
+                })
+                .catch(err => console.error("Error:", err));
+            });
+    });
     </script>
+    
+
 
 </body>
 
